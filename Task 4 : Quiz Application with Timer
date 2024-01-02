@@ -1,0 +1,79 @@
+class Quiz {
+    constructor(questions) {
+        this.questions = questions;
+        this.currentQuestionIndex = 0;
+        this.score = 0;
+        this.timer = null;
+        this.timeLimit = 10; // Time limit for each question in seconds
+    }
+
+    startQuiz() {
+        this.displayQuestion();
+        this.startTimer();
+    }
+
+    displayQuestion() {
+        const currentQuestion = this.questions[this.currentQuestionIndex];
+        console.log(`Question ${this.currentQuestionIndex + 1}: ${currentQuestion.question}`);
+        
+        currentQuestion.options.forEach((option, index) => {
+            console.log(`${index + 1}. ${option}`);
+        });
+    }
+
+    startTimer() {
+        this.timer = setTimeout(() => {
+            console.log("Time's up! Moving to the next question.");
+            this.checkAnswer(null); // Automatically move to the next question when time is up
+        }, this.timeLimit * 1000);
+    }
+
+    submitAnswer(userAnswer) {
+        clearTimeout(this.timer); // Stop the timer
+
+        const correctAnswer = this.questions[this.currentQuestionIndex].correctAnswer;
+        this.checkAnswer(userAnswer === correctAnswer);
+    }
+
+    checkAnswer(isCorrect) {
+        if (isCorrect) {
+            this.score++;
+            console.log("Correct!");
+        } else {
+            console.log("Incorrect!");
+        }
+
+        this.currentQuestionIndex++;
+
+        if (this.currentQuestionIndex < this.questions.length) {
+            this.displayQuestion();
+            this.startTimer();
+        } else {
+            this.displayResult();
+        }
+    }
+
+    displayResult() {
+        console.log("Quiz completed!");
+        console.log(`Your final score: ${this.score} out of ${this.questions.length}`);
+    }
+}
+
+// Example usage:
+
+const quizQuestions = [
+    {
+        question: "What is the capital of France?",
+        options: ["Berlin", "Paris", "Rome", "Madrid"],
+        correctAnswer: 2 // Index of the correct answer in the options array
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Mars", "Venus", "Jupiter", "Saturn"],
+        correctAnswer: 0
+    },
+    // Add more questions as needed
+];
+
+const quiz = new Quiz(quizQuestions);
+quiz.startQuiz();
