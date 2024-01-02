@@ -1,0 +1,77 @@
+class BankAccount {
+    constructor(initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    deposit(amount) {
+        this.balance += amount;
+        return true;
+    }
+
+    withdraw(amount) {
+        if (amount > this.balance) {
+            return false; // Insufficient funds
+        }
+        this.balance -= amount;
+        return true;
+    }
+
+    checkBalance() {
+        return this.balance;
+    }
+}
+
+class ATM {
+    constructor(userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    withdraw(amount) {
+        if (amount <= 0) {
+            return "Invalid withdrawal amount.";
+        }
+
+        const success = this.userAccount.withdraw(amount);
+
+        if (success) {
+            return `Successfully withdrew $${amount}. Remaining balance: $${this.userAccount.checkBalance()}.`;
+        } else {
+            return "Insufficient funds for withdrawal.";
+        }
+    }
+
+    deposit(amount) {
+        if (amount <= 0) {
+            return "Invalid deposit amount.";
+        }
+
+        const success = this.userAccount.deposit(amount);
+
+        if (success) {
+            return `Successfully deposited $${amount}. New balance: $${this.userAccount.checkBalance()}.`;
+        } else {
+            return "Deposit failed.";
+        }
+    }
+
+    checkBalance() {
+        return `Your account balance is $${this.userAccount.checkBalance()}.`;
+    }
+}
+
+// Example usage:
+
+// Create a bank account with an initial balance of $1000
+const userBankAccount = new BankAccount(1000);
+
+// Connect the ATM with the user's bank account
+const atmMachine = new ATM(userBankAccount);
+
+// Use the ATM functionalities
+console.log(atmMachine.checkBalance()); // Check initial balance
+
+console.log(atmMachine.withdraw(500)); // Withdraw $500
+console.log(atmMachine.withdraw(700)); // Attempt to withdraw $700 (insufficient funds)
+
+console.log(atmMachine.deposit(200)); // Deposit $200
+console.log(atmMachine.checkBalance()); // Check updated balance
