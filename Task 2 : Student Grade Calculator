@@ -1,0 +1,44 @@
+function calculateGrade(averagePercentage) {
+    if (averagePercentage >= 90 && averagePercentage <= 100) {
+        return 'A';
+    } else if (averagePercentage >= 80 && averagePercentage < 90) {
+        return 'B';
+    } else if (averagePercentage >= 70 && averagePercentage < 80) {
+        return 'C';
+    } else if (averagePercentage >= 60 && averagePercentage < 70) {
+        return 'D';
+    } else {
+        return 'F';
+    }
+}
+
+function calculateResults() {
+    const numSubjects = parseInt(prompt("Enter the number of subjects:"));
+    let totalMarks = 0;
+
+    // Step 1: Take marks obtained in each subject
+    for (let i = 1; i <= numSubjects; i++) {
+        const subjectMarks = parseFloat(prompt(`Enter marks obtained in subject ${i} (out of 100):`));
+        totalMarks += subjectMarks;
+    }
+
+    // Step 2: Calculate Total Marks
+    console.log(`Total Marks: ${totalMarks}`);
+
+    // Step 3: Calculate Average Percentage
+    const averagePercentage = totalMarks / numSubjects;
+    console.log(`Average Percentage: ${averagePercentage.toFixed(2)}%`);
+
+    // Step 4: Grade Calculation
+    const grade = calculateGrade(averagePercentage);
+    console.log(`Grade: ${grade}`);
+
+    // Step 5: Display Results
+    console.log("Results:");
+    console.log(`Total Marks: ${totalMarks}`);
+    console.log(`Average Percentage: ${averagePercentage.toFixed(2)}%`);
+    console.log(`Grade: ${grade}`);
+}
+
+// Execute the function when the script is run
+calculateResults();
