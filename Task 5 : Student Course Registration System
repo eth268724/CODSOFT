@@ -1,0 +1,99 @@
+class Course {
+    constructor(courseCode, title, description, capacity, schedule) {
+        this.courseCode = courseCode;
+        this.title = title;
+        this.description = description;
+        this.capacity = capacity;
+        this.schedule = schedule;
+        this.students = [];
+    }
+
+    getAvailableSlots() {
+        return this.capacity - this.students.length;
+    }
+
+    displayCourseDetails() {
+        console.log(`Course Code: ${this.courseCode}`);
+        console.log(`Title: ${this.title}`);
+        console.log(`Description: ${this.description}`);
+        console.log(`Capacity: ${this.capacity}`);
+        console.log(`Schedule: ${this.schedule}`);
+        console.log(`Available Slots: ${this.getAvailableSlots()}`);
+        console.log("------------------------------");
+    }
+}
+
+class Student {
+    constructor(studentID, name) {
+        this.studentID = studentID;
+        this.name = name;
+        this.registeredCourses = [];
+    }
+
+    registerForCourse(course) {
+        if (course.getAvailableSlots() > 0) {
+            course.students.push(this);
+            this.registeredCourses.push(course);
+            console.log(`${this.name} successfully registered for ${course.title}.`);
+        } else {
+            console.log(`Sorry, ${course.title} is full. Cannot register.`);
+        }
+    }
+
+    dropCourse(course) {
+        const index = this.registeredCourses.indexOf(course);
+        if (index !== -1) {
+            course.students.splice(course.students.indexOf(this), 1);
+            this.registeredCourses.splice(index, 1);
+            console.log(`${this.name} successfully dropped ${course.title}.`);
+        } else {
+            console.log(`${this.name} is not registered for ${course.title}.`);
+        }
+    }
+
+    displayStudentDetails() {
+        console.log(`Student ID: ${this.studentID}`);
+        console.log(`Name: ${this.name}`);
+        console.log("Registered Courses:");
+        this.registeredCourses.forEach(course => {
+            console.log(`- ${course.title}`);
+        });
+        console.log("------------------------------");
+    }
+}
+
+// Example usage:
+
+// Create courses
+const course1 = new Course("CS101", "Introduction to Programming", "Fundamentals of programming", 30, "Mon, Wed 10:00 AM");
+const course2 = new Course("MATH201", "Calculus I", "Introduction to calculus", 25, "Tue, Thu 2:00 PM");
+const course3 = new Course("ENG202", "English Literature", "Literature analysis", 20, "Mon, Wed 1:00 PM");
+
+// Create students
+const student1 = new Student(1, "John Doe");
+const student2 = new Student(2, "Jane Smith");
+
+// Display available courses
+function displayCourseListing(courses) {
+    console.log("Available Courses:");
+    courses.forEach(course => {
+        course.displayCourseDetails();
+    });
+}
+
+displayCourseListing([course1, course2, course3]);
+
+// Student registration
+student1.registerForCourse(course1);
+student1.registerForCourse(course2);
+student2.registerForCourse(course2);
+
+// Display student details
+student1.displayStudentDetails();
+student2.displayStudentDetails();
+
+// Drop a course
+student1.dropCourse(course1);
+
+// Display updated student details
+student1.displayStudentDetails();
